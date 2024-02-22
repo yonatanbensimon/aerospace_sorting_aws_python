@@ -1,5 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
+import Phone from './Phone';
+import Address from './Address';
+import Turbine from './Turbine';
 
 function App() {
   return (
@@ -12,7 +15,11 @@ function App() {
         <label><input type="radio" name="datatype" text="Adresses"></input>Adresses</label>
         <label><input type="radio" name="datatype" text="Turbines and IBR's"></input>Turbines and IBR's</label>
       </form>
+      <Phone />
+      <Address />
+      <Turbine />
     </div>
+    
   );
 }
 
