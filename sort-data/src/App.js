@@ -6,6 +6,11 @@ import Turbine from './Turbine';
 import React from 'react';
 import { useState } from 'react';
 
+import { Amplify } from 'aws-amplify';
+import awsExports from './aws-exports';
+
+Amplify.configure(awsExports);
+
 function App() {
   const [selectedForm, setSelectedForm] = useState(null);
 
@@ -32,3 +37,4 @@ function App() {
 }
 
 export default App;
+
