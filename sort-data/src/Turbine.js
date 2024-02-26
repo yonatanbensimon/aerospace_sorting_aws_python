@@ -26,9 +26,11 @@ function Turbine() {
                 <p>How do you want to sort your phone numbers?</p>
                 <form>
                <label><input type="radio" name="datatype" text="By Date" value="date" checked={sortType === "date"} onChange={handleRadioChange}></input>By Date</label>
+               <label><input type="radio" name="datatype" text="Trend Analysis" value="trend" checked={sortType === "trend"} onChange={handleRadioChange}></input> Trend Analysis</label>
              </form>
 
              {sortType === "date" && <DateSort />}
+             {sortType === "trend" && <Trend />}
             </div>   
         );
     }
@@ -38,6 +40,15 @@ function Turbine() {
             <div>
                 <button onClick={handleDateSort}>Sort</button>
                 {downloadUrl && <a href={downloadUrl} style={{display: downloadUrl ? 'block' : 'none'}} download>Download Sorted File</a>}
+            </div>
+        )
+    }
+
+    function Trend() {
+        return (
+            <div>
+                <button onClick={handleTrend}>Process</button>
+                {downloadUrl && <a href={downloadUrl} style={{display: downloadUrl ? 'block' : 'none'}} download>Download File</a>}
             </div>
         )
     }
@@ -54,6 +65,30 @@ function Turbine() {
         setSorting(true);
         try {
             const response = await axios.post('https://nt6c8jep2c.execute-api.ca-central-1.amazonaws.com/prod/sort-by-date', { 
+                fileName: 'public/' + file.name,
+                bucketName: 'sortdatabucket224455-dev'
+            });
+            if(response.data && response.data.downloadUrl) {
+                setDownloadURL(response.data.downloadUrl);
+                setSortSuccess(true);
+            } else {
+                // Handle case where downloadUrl is not in the response
+                setSortError('No download URL provided');
+                setSortSuccess(false);
+            }
+        } catch (error) {
+            console.error('Error sorting the file:', error);
+            setSortError(error.message);
+            alert(sortError);
+        } finally {
+            setSorting(false);
+        }
+    }
+
+    const handleTrend = async () => {
+        setSorting(true);
+        try {
+            const response = await axios.post('https://nt6c8jep2c.execute-api.ca-central-1.amazonaws.com/prod/trend-analysis', { 
                 fileName: 'public/' + file.name,
                 bucketName: 'sortdatabucket224455-dev'
             });
