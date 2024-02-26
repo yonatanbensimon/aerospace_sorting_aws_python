@@ -13,7 +13,6 @@ function Phone() {
     const [error, setError] = useState('');
     const[next, setNext] = useState(false);
     const [showup, setShowUp] = useState(false);
-    const [text, setText] = useState(false);
     const [sorting, setSorting] = useState(false);
     const [downloadUrl, setDownloadURL] = useState("");
     const [sortSuccess, setSortSuccess] = useState(false);
@@ -57,11 +56,6 @@ function Phone() {
     const handleRadioChange = (event) => {
         setSortType(event.target.value);
       }
-
-    const fileChange = (event) => {
-        setText(true);
-        setFile(event.target.files[0]);
-    }
 
     const upload = async () => { //Async is so the button will keep having "Uploading...", throughout the entire function
         if (!file) {
@@ -142,7 +136,7 @@ function Phone() {
             <br></br>
 
             <div hidden={showup}>
-            <input type="file" onChange={fileChange} disabled={uploading}></input>
+            <input type="file" disabled={uploading}></input>
             <button onClick={upload} disabled={uploading}>
                 {uploading ? 'Uploading...' : 'Upload'}
             </button>
