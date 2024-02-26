@@ -27,10 +27,11 @@ function Phone() {
                 <p>How do you want to sort your phone numbers?</p>
                 <form>
                <label><input type="radio" name="datatype" text="By Area Code" value="area" checked={sortType === "area"} onChange={handleRadioChange}></input>By Area Code</label>
-               <label><input type="radio" name="datatype" text="By Ascending Values" value="ascending"></input>By Ascending Values</label>
+               <label><input type="radio" name="datatype" text="By Ascending Values" value="ascending" checked={sortType === "ascending"} onChange={handleRadioChange}></input>By Ascending Values</label>
              </form>
 
              {sortType === "area" && <AreaSort />}
+             {sortType === "ascending" && <AscendingSort />}
             </div>   
         );
     }
@@ -42,6 +43,15 @@ function Phone() {
                 {downloadUrl && <a href={downloadUrl} style={{display: downloadUrl ? 'block' : 'none'}} download>Download Sorted File</a>}
             </div>
         );
+    }
+
+    function AscendingSort() {
+        return (
+            <div>
+                <button onClick={handleAscendingSort}>Sort</button>
+                {downloadUrl && <a href={downloadUrl} style={{display: downloadUrl ? 'block' : 'none'}} download>Download Sorted File</a>}
+            </div>
+        )
     }
 
     const handleRadioChange = (event) => {
@@ -82,6 +92,30 @@ function Phone() {
         setSorting(true);
         try {
             const response = await axios.post('https://y5e279q3e2.execute-api.ca-central-1.amazonaws.com/prod/sort-by-area', { 
+                fileName: 'public/' + file.name,
+                bucketName: 'sortdatabucket224455-dev'
+            });
+            if(response.data && response.data.downloadUrl) {
+                setDownloadURL(response.data.downloadUrl);
+                setSortSuccess(true);
+            } else {
+                // Handle case where downloadUrl is not in the response
+                setSortError('No download URL provided');
+                setSortSuccess(false);
+            }
+        } catch (error) {
+            console.error('Error sorting the file:', error);
+            setSortError(error.message);
+            alert(sortError);
+        } finally {
+            setSorting(false);
+        }
+    }
+
+    const handleAscendingSort = async () => {
+        setSorting(true);
+        try {
+            const response = await axios.post('https://y5e279q3e2.execute-api.ca-central-1.amazonaws.com/prod/sort-by-ascending', { 
                 fileName: 'public/' + file.name,
                 bucketName: 'sortdatabucket224455-dev'
             });
