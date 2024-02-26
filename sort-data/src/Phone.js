@@ -57,6 +57,10 @@ function Phone() {
         setSortType(event.target.value);
       }
 
+    const fileChange = (event) => {
+        setFile(event.target.files[0]);
+    }
+
     const upload = async () => { //Async is so the button will keep having "Uploading...", throughout the entire function
         if (!file) {
             alert("Please upload a file");
@@ -136,7 +140,7 @@ function Phone() {
             <br></br>
 
             <div hidden={showup}>
-            <input type="file" disabled={uploading}></input>
+            <input type="file" onChange={fileChange} disabled={uploading}></input>
             <button onClick={upload} disabled={uploading}>
                 {uploading ? 'Uploading...' : 'Upload'}
             </button>
