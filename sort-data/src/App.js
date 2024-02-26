@@ -1,6 +1,5 @@
 import './App.css';
 import Phone from './Phone';
-import Address from './Address';
 import Turbine from './Turbine';
 
 import React from 'react';
@@ -24,12 +23,10 @@ function App() {
       <p>Welcome to the sort data service, where you can upload different types of data, sort them in different ways, and finally redownload your data. Keep in mind that this service is still under development</p>
       <h2>Type of Data</h2>
       <form>
-        <label><input type="radio" name="datatype" text="Phone Number" value="phone" checked={selectedForm === "phone"} onChange={handleChange}></input>Phone Number</label>
-        <label><input type="radio" name="datatype" text="Adresses" value="address" checked={selectedForm === "address"} onChange={handleChange}></input>Addresses</label>
-        <label><input type="radio" name="datatype" text="Turbines and IBR's" value="turbine" checked={selectedForm === "turbine"} onChange={handleChange}></input>Turbines and IBR's</label>
+        <label><input type="radio" name="datatype" text=" Phone Number" value="phone" checked={selectedForm === "phone"} onChange={handleChange}></input>Phone Number</label>
+        <label><input type="radio" name="datatype" text=" Flight Data" value="turbine" checked={selectedForm === "turbine"} onChange={handleChange}></input> Flight Data</label>
       </form>
       {selectedForm === "phone" && <Phone />}
-      {selectedForm === "address" && <Address />}
       {selectedForm === "turbine" && <Turbine />}
     </div>
     
