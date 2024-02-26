@@ -12,10 +12,32 @@ function Turbine() {
     const [error, setError] = useState('');
     const [showup, setShowUp] = useState(false);
     const[next, setNext] = useState(false);
+    const [sortError, setSortError] = useState('');
+    const [sortType, setSortType] = useState('');
+    const [downloadUrl, setDownloadURL] = useState("");
+
+
+    function Done() {
+        return (
+            <div>
+                {success && <p>{file.name} has upload successfully</p>}
+                <p>How do you want to sort your phone numbers?</p>
+                <form>
+               <label><input type="radio" name="datatype" text="By Date" value="date" checked={sortType === "date"} onChange={handleRadioChange}></input>By Date</label>
+             </form>
+
+             {/*sortType === "area" && <AreaSort />*/}
+            </div>   
+        );
+    }
 
     const fileChange = (event) => {
         setFile(event.target.files[0]);
     }
+
+    const handleRadioChange = (event) => {
+        setSortType(event.target.value);
+      }
 
     const upload = async () => { //Async is so the button will keep having "Uploading...", throughout the entire function
         if (!file) {
@@ -55,7 +77,7 @@ return(
     {error && <p className="error">{error}</p>}
     </div>
 
-   {/* {next && <Done />} */}
+   {next && <Done />}
 
 </div>
     );
