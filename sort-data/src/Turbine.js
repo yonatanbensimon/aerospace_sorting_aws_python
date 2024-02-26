@@ -14,7 +14,9 @@ function Turbine() {
     const[next, setNext] = useState(false);
     const [sortError, setSortError] = useState('');
     const [sortType, setSortType] = useState('');
+    const [sorting, setSorting] = useState(false);
     const [downloadUrl, setDownloadURL] = useState("");
+    const [sortSuccess, setSortSuccess] = useState(false);
 
 
     function Done() {
@@ -26,9 +28,18 @@ function Turbine() {
                <label><input type="radio" name="datatype" text="By Date" value="date" checked={sortType === "date"} onChange={handleRadioChange}></input>By Date</label>
              </form>
 
-             {/*sortType === "area" && <AreaSort />*/}
+             {sortType === "date" && <DateSort />}
             </div>   
         );
+    }
+
+    function DateSort() {
+        return (
+            <div>
+                <button onClick={handleDateSort}>Sort</button>
+                {downloadUrl && <a href={downloadUrl} style={{display: downloadUrl ? 'block' : 'none'}} download>Download Sorted File</a>}
+            </div>
+        )
     }
 
     const fileChange = (event) => {
@@ -38,6 +49,30 @@ function Turbine() {
     const handleRadioChange = (event) => {
         setSortType(event.target.value);
       }
+    
+      const handleDateSort = async () => {
+        setSorting(true);
+        try {
+            const response = await axios.post('https://nt6c8jep2c.execute-api.ca-central-1.amazonaws.com/prod/sort-by-date', { 
+                fileName: 'public/' + file.name,
+                bucketName: 'sortdatabucket224455-dev'
+            });
+            if(response.data && response.data.downloadUrl) {
+                setDownloadURL(response.data.downloadUrl);
+                setSortSuccess(true);
+            } else {
+                // Handle case where downloadUrl is not in the response
+                setSortError('No download URL provided');
+                setSortSuccess(false);
+            }
+        } catch (error) {
+            console.error('Error sorting the file:', error);
+            setSortError(error.message);
+            alert(sortError);
+        } finally {
+            setSorting(false);
+        }
+    }
 
     const upload = async () => { //Async is so the button will keep having "Uploading...", throughout the entire function
         if (!file) {
