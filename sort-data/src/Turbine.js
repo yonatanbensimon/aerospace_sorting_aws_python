@@ -26,7 +26,7 @@ function Turbine() {
                 <p>How do you want to sort your phone numbers?</p>
                 <form>
                <label><input type="radio" name="datatype" text="By Date" value="date" checked={sortType === "date"} onChange={handleRadioChange}></input>By Date</label>
-               <label><input type="radio" name="datatype" text="Trend Analysis" value="trend" checked={sortType === "trend"} onChange={handleRadioChange}></input> Trend Analysis</label>
+               <label><input type="radio" name="datatype" text="Trend Analysis" value="trend" checked={sortType === "trend"} onChange={handleRadioChange}></input>  Analysis</label>
              </form>
 
              {sortType === "date" && <DateSort />}
